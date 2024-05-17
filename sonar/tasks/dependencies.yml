@@ -1,5 +1,20 @@
 ---
 
+- name: Add pgdg repo to sources.list.d
+  lineinfile:
+    path: /etc/apt/sources.list.d/pgdg.list
+    line: "{{ postgre_version }}"
+    create: true
+
+- name: Download PostgreSQL key and add it to system keyring
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: updating repo
+  apt:
+     update_cache: yes
+
 - name: install PostgreSql and its contributed modules, java, unzip
   apt:
     update_cache: yes
@@ -15,18 +30,3 @@
     state: present
   loop: "{{ installingredhat_dependencies }}"
   when: ansible_os_family == "RedHat"
-
-- name: Add pgdg repo to sources.list.d
-  lineinfile:
-    path: /etc/apt/sources.list.d/pgdg.list
-    line: "{{ postgre_version }}"
-    create: true
-
-- name: Download PostgreSQL key and add it to system keyring
-  apt_key:
-    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-    state: present
-
-- name: updating repo
-  apt:
-     update_cache: yes
