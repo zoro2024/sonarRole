@@ -13,6 +13,7 @@ pipeline {
                     ansiblePlaybook(
                         playbook: 'install.yml',
                         inventory: 'aws_ec2.yaml'
+                        credentialsId: 'tool.pem'
                     )
                 }
             }
